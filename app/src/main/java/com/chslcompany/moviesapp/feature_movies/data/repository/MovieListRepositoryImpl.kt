@@ -23,7 +23,6 @@ class MovieListRepositoryImpl @Inject constructor(
 
             val localMovieList = database.movieDao.getMovieListByCategory(category)
             val shouldLoadLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
-
             if (shouldLoadLocalMovie) {
                 emit(Resource.Success(
                     data = localMovieList.map { movieDb ->
@@ -33,25 +32,23 @@ class MovieListRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-            val getMovieFromApi = try {
-                api.getMovieList(category, page)
+
+            try {
+                val getMovieFromApi = api.getMovieList(category, page)
+                val saveMovieList = getMovieFromApi.results.map { movieDTO ->
+                    movieDTO.toMovieDb(category)
+                }
+                database.movieDao.upsertMovieList(saveMovieList)
+                emit(Resource.Success(
+                    data = saveMovieList.map { it.toMovie(category) }
+                ))
+                emit(Resource.Loading(false))
+                return@flow
             } catch (e: Exception) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Error ao carregar filmes"))
                 return@flow
             }
-
-            val saveMovieList = getMovieFromApi.results.map {
-                movieDTO -> movieDTO.toMovieDb(category)
-            }
-
-            database.movieDao.upsertMovieList(saveMovieList)
-
-            emit(Resource.Success(
-                data = saveMovieList.map { it.toMovie(category) }
-            ))
-            emit(Resource.Loading(false))
-            return@flow
         }
     }
 
@@ -66,7 +63,7 @@ class MovieListRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-            emit(Resource.Error(message = "Error ao carrega busca por filmes"))
+            emit(Resource.Error(message = "Error ao carregar busca por filmes"))
             emit(Resource.Loading(false))
             return@flow
         }
