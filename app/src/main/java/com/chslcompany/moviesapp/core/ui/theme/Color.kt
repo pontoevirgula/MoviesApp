@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.ui.theme
+package com.chslcompany.moviesapp.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

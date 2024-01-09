@@ -28,19 +28,20 @@ class MovieListViewModel @Inject constructor(
         getUpcomingMovieList(forceFetchFromRemote = false)
     }
 
-    fun onEvent(event : MovieListUiEvent){
-        when(event){
-            MovieListUiEvent.Navigate ->{
+    fun onEvent(event: MovieListUiEvent) {
+        when (event) {
+            MovieListUiEvent.Navigate -> {
                 _movieListState.update {
                     it.copy(
                         isCurrentPopularScreen = !movieListState.value.isCurrentPopularScreen
                     )
                 }
             }
+
             is MovieListUiEvent.Paginate -> {
-                if (event.category == Category.POPULAR){
+                if (event.category == Category.POPULAR) {
                     getPopularMovieList(forceFetchFromRemote = true)
-                } else if (event.category == Category.UPCOMING){
+                } else if (event.category == Category.UPCOMING) {
                     getUpcomingMovieList(forceFetchFromRemote = true)
                 }
             }
@@ -49,7 +50,39 @@ class MovieListViewModel @Inject constructor(
 
     private fun getUpcomingMovieList(forceFetchFromRemote: Boolean) {
         viewModelScope.launch {
+            _movieListState.update {
+                it.copy(isLoading = true)
+            }
+            repository.getMovieList(
+                forceFetchFromRemote, Category.UPCOMING, movieListState.value.upcomingMovieListPage
+            ).collectLatest { result ->
+                when (result) {
+                    is Resource.Error -> {
+                        _movieListState.update {
+                            it.copy(isLoading = false)
+                        }
+                    }
 
+                    is Resource.Loading -> {
+                        _movieListState.update {
+                            it.copy(isLoading = result.isLoading)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        result.data?.let { upcomingList ->
+                            _movieListState.update {
+                                it.copy(
+                                    upcomingMovieList = movieListState.value.upcomingMovieList + upcomingList.shuffled(),
+                                    upcomingMovieListPage = movieListState.value.upcomingMovieListPage + 1
+                                )
+                            }
+                        }
+                    }
+
+                }
+
+            }
         }
     }
 
@@ -59,26 +92,33 @@ class MovieListViewModel @Inject constructor(
                 it.copy(isLoading = true)
             }
             repository.getMovieList(
-                forceFetchFromRemote,
-                Category.POPULAR,
-                movieListState.value.popularMovieListPage
+                forceFetchFromRemote, Category.POPULAR, movieListState.value.popularMovieListPage
             ).collectLatest { result ->
-                 when(result){
-                     is Resource.Error ->{
-                         _movieListState.update {
-                             it.copy(isLoading = false)
-                         }
-                     }
-                     is Resource.Loading ->{
-                         _movieListState.update {
-                             it.copy(isLoading = result.isLoading)
-                         }
-                     }
-                     is Resource.Success ->{
-                         result.data
-                     }
+                when (result) {
+                    is Resource.Error -> {
+                        _movieListState.update {
+                            it.copy(isLoading = false)
+                        }
+                    }
 
-                 }
+                    is Resource.Loading -> {
+                        _movieListState.update {
+                            it.copy(isLoading = result.isLoading)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        result.data?.let { popularList ->
+                            _movieListState.update {
+                                it.copy(
+                                    popularMovieList = movieListState.value.popularMovieList + popularList.shuffled(),
+                                    popularMovieListPage = movieListState.value.popularMovieListPage + 1
+                                )
+                            }
+                        }
+                    }
+
+                }
 
             }
         }
