@@ -28,10 +28,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MoviesAppTheme {
-                SetBarColor(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                SetBarColor(color = MaterialTheme.colorScheme.inverseOnSurface)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
 

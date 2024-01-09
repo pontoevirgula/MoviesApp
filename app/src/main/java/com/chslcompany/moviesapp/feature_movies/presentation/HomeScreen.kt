@@ -52,7 +52,7 @@ fun HomeScreen() {
                 },
                 modifier = Modifier.shadow(2.dp),
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    MaterialTheme.colorScheme.inverseOnSurface
                 )
             )
         }
