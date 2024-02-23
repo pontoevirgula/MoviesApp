@@ -4,4 +4,8 @@
     <string name="upcoming">Próximos lançamentos</string>
     <string name="popular_movie">Filmes populares</string>
     <string name="upcoming_movie">Lançados em breve</string>
+    <string name="language">"Language: "</string>
+    <string name="release_date">"Data de atualização: "</string>
+    <string name="votes">" Votos"</string>
+    <string name="overview">Resumo</string>
 </resources>

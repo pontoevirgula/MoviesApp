@@ -23,9 +23,9 @@ import com.chslcompany.moviesapp.feature_movies.util.Screen
 
 @Composable
 fun BottomNavigationBar(
-    bottomNavController: NavHostController, onItemSelected: (MovieListUiEvent) -> Unit
+    bottomNavController: NavHostController,
+    onItemSelected: (MovieListUiEvent) -> Unit
 ) {
-
     val items = listOf(
         BottomNavigationItem(
             title = stringResource(R.string.popular),

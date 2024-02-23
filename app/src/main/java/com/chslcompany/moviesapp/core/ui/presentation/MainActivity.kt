@@ -16,7 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chslcompany.moviesapp.core.ui.theme.MoviesAppTheme
-import com.chslcompany.moviesapp.feature_movies.presentation.screen.DetailScreen
+import com.chslcompany.moviesapp.details.DetailsScreen
 import com.chslcompany.moviesapp.feature_movies.presentation.screen.HomeScreen
 import com.chslcompany.moviesapp.feature_movies.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Home.rout
                     ){
                         composable(Screen.Home.rout){
-                            HomeScreen()
+                            HomeScreen(navController)
                         }
                         composable(
                             route = Screen.Details.rout+"/{movieId}",
@@ -49,8 +49,8 @@ class MainActivity : ComponentActivity() {
                                     type = NavType.IntType
                                 }
                             )
-                        ){ backStackEntry ->
-                            DetailScreen(backStackEntry)
+                        ){
+                            DetailsScreen()
                         }
                     }
                 }
