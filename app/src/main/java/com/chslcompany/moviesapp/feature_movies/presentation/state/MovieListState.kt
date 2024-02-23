@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.presentation
+package com.chslcompany.moviesapp.feature_movies.presentation.state
 
 import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
 

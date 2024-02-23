@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chslcompany.moviesapp.core.util.Resource
 import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
-import com.chslcompany.moviesapp.feature_movies.presentation.MovieListState
-import com.chslcompany.moviesapp.feature_movies.presentation.MovieListUiEvent
+import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListState
+import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

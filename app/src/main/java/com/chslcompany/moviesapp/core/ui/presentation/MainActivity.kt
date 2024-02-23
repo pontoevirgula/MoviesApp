@@ -16,8 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chslcompany.moviesapp.core.ui.theme.MoviesAppTheme
-import com.chslcompany.moviesapp.feature_movies.presentation.DetailScreen
-import com.chslcompany.moviesapp.feature_movies.presentation.HomeScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.screen.DetailScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.screen.HomeScreen
 import com.chslcompany.moviesapp.feature_movies.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint

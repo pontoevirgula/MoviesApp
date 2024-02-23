@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.presentation
+package com.chslcompany.moviesapp.feature_movies.presentation.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chslcompany.moviesapp.R
+import com.chslcompany.moviesapp.core.ui.presentation.BottomNavigationBar
 import com.chslcompany.moviesapp.feature_movies.presentation.viewmodel.MovieListViewModel
 import com.chslcompany.moviesapp.feature_movies.util.Screen
 
@@ -63,10 +64,10 @@ fun HomeScreen() {
         ){
             NavHost(navController = bottomNavController, startDestination = Screen.PopularMovieList.rout){
                 composable(Screen.PopularMovieList.rout){
-                    //PopularMovieScreen()
+                    PopularMovieScreen()
                 }
                 composable(Screen.UpcomingMovieList.rout){
-                    //PopularMovieScreen()
+                    //UpcomingMovieScreen()
                 }
             }
         }
