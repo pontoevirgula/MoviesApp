@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -29,7 +29,7 @@ import com.chslcompany.moviesapp.feature_movies.util.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<MovieListViewModel>()
     val movieListState = viewModel.movieListState.collectAsState().value
     val bottomNavController = rememberNavController()
@@ -63,17 +63,20 @@ fun HomeScreen(navController: NavController) {
             .padding(it)
             .fillMaxSize()
         ){
-            NavHost(navController = bottomNavController, startDestination = Screen.PopularMovieList.rout){
+            NavHost(
+                navController = bottomNavController,
+                startDestination = Screen.PopularMovieList.rout
+            ){
                 composable(Screen.PopularMovieList.rout) {
                     PopularMovieScreen(
-                        navController = bottomNavController,
+                        navController = navController,
                         movieListState = movieListState,
                         onEvent = viewModel::onEvent
                     )
                 }
                 composable(Screen.UpcomingMovieList.rout) {
                     UpcomingMoviesScreen(
-                        navController = bottomNavController,
+                        navController = navController,
                         movieListState = movieListState,
                         onEvent = viewModel::onEvent
                     )
