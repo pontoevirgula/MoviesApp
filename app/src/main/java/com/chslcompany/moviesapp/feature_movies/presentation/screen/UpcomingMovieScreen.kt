@@ -18,13 +18,13 @@ import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListUiEv
 import com.chslcompany.moviesapp.feature_movies.util.Category
 
 @Composable
-fun PopularMovieScreen(
+fun UpcomingMoviesScreen(
     movieListState: MovieListState,
     navController: NavHostController,
     onEvent: (MovieListUiEvent) -> Unit
 ) {
 
-    if (movieListState.popularMovieList.isEmpty()) {
+    if (movieListState.upcomingMovieList.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -37,15 +37,15 @@ fun PopularMovieScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 8.dp, horizontal = 4.dp)
         ) {
-            items(movieListState.popularMovieList.size) { index ->
+            items(movieListState.upcomingMovieList.size) { index ->
                 MovieItem(
-                    movie = movieListState.popularMovieList[index],
+                    movie = movieListState.upcomingMovieList[index],
                     navHostController = navController
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
-                    onEvent(MovieListUiEvent.Paginate(Category.POPULAR))
+                if (index >= movieListState.upcomingMovieList.size - 1 && !movieListState.isLoading) {
+                    onEvent(MovieListUiEvent.Paginate(Category.UPCOMING))
                 }
 
             }
@@ -53,4 +53,3 @@ fun PopularMovieScreen(
     }
 
 }
-
