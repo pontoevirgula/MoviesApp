@@ -2,6 +2,7 @@
     <string name="app_name">MoviesApp</string>
     <string name="popular">Popular</string>
     <string name="upcoming">Próximos lançamentos</string>
+    <string name="my_favorites">Meus favoritos</string>
     <string name="popular_movie">Filmes populares</string>
     <string name="upcoming_movie">Lançados em breve</string>
     <string name="language">"Language: "</string>

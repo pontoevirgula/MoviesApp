@@ -16,9 +16,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chslcompany.moviesapp.core.ui.theme.MoviesAppTheme
-import com.chslcompany.moviesapp.details.DetailsScreen
-import com.chslcompany.moviesapp.feature_movies.presentation.screen.HomeScreen
-import com.chslcompany.moviesapp.feature_movies.util.Screen
+import com.chslcompany.moviesapp.feature_movies.presentation.details.screen.DetailsScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.home.screen.HomeScreen
+import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,13 +37,13 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Home.rout
+                        startDestination = Screens.Home.rout
                     ){
-                        composable(Screen.Home.rout){
+                        composable(Screens.Home.rout){
                             HomeScreen(navController)
                         }
                         composable(
-                            route = Screen.Details.rout+"/{movieId}",
+                            route = Screens.Details.rout+"/{movieId}",
                             arguments = listOf(
                                 navArgument("movieId") {
                                     type = NavType.IntType

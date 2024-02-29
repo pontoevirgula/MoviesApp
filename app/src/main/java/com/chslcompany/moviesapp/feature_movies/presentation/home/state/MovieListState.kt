@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.presentation.state
+package com.chslcompany.moviesapp.feature_movies.presentation.home.state
 
 import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
 
@@ -11,5 +11,6 @@ data class MovieListState(
     val isCurrentPopularScreen: Boolean = true,
 
     val popularMovieList: List<Movie> = emptyList(),
-    val upcomingMovieList: List<Movie> = emptyList()
+    val upcomingMovieList: List<Movie> = emptyList(),
+    val favoriteMovieList: List<Movie> = emptyList(),
 )

@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.data.local
+package com.chslcompany.moviesapp.feature_movies.data.local.movie
 
 import androidx.room.Dao
 import androidx.room.Query

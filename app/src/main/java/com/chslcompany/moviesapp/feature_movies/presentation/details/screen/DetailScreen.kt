@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.details
+package com.chslcompany.moviesapp.feature_movies.presentation.details.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +39,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.chslcompany.moviesapp.BuildConfig
 import com.chslcompany.moviesapp.R
+import com.chslcompany.moviesapp.feature_movies.presentation.details.viewmodel.DetailsViewModel
 import com.chslcompany.moviesapp.feature_movies.util.RatingBar
 
 @Composable

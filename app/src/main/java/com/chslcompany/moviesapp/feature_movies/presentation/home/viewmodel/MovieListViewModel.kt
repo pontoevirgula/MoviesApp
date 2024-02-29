@@ -1,11 +1,11 @@
-package com.chslcompany.moviesapp.feature_movies.presentation.viewmodel
+package com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chslcompany.moviesapp.core.util.Resource
 import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
-import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListState
-import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListUiEvent
+import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
+import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +45,8 @@ class MovieListViewModel @Inject constructor(
                     getUpcomingMovieList(forceFetchFromRemote = true)
                 }
             }
+
+            else -> {}
         }
     }
 
@@ -80,6 +82,7 @@ class MovieListViewModel @Inject constructor(
                         }
                     }
 
+                    else -> {}
                 }
 
             }
@@ -118,6 +121,7 @@ class MovieListViewModel @Inject constructor(
                         }
                     }
 
+                    else -> {}
                 }
 
             }

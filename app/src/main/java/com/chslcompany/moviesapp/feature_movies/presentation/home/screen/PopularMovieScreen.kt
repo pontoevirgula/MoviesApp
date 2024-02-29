@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.presentation.screen
+package com.chslcompany.moviesapp.feature_movies.presentation.home.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,18 +13,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListState
-import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListUiEvent
+import com.chslcompany.moviesapp.feature_movies.presentation.MovieItem
+import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
+import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
 
 @Composable
-fun UpcomingMoviesScreen(
+fun PopularMovieScreen(
     movieListState: MovieListState,
     navController: NavHostController,
     onEvent: (MovieListUiEvent) -> Unit
 ) {
 
-    if (movieListState.upcomingMovieList.isEmpty()) {
+    if (movieListState.popularMovieList.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -37,15 +38,15 @@ fun UpcomingMoviesScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 8.dp, horizontal = 4.dp)
         ) {
-            items(movieListState.upcomingMovieList.size) { index ->
+            items(movieListState.popularMovieList.size) { index ->
                 MovieItem(
-                    movie = movieListState.upcomingMovieList[index],
+                    movie = movieListState.popularMovieList[index],
                     navHostController = navController
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                if (index >= movieListState.upcomingMovieList.size - 1 && !movieListState.isLoading) {
-                    onEvent(MovieListUiEvent.Paginate(Category.UPCOMING))
+                if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
+                    onEvent(MovieListUiEvent.Paginate(Category.POPULAR))
                 }
 
             }
@@ -53,3 +54,4 @@ fun UpcomingMoviesScreen(
     }
 
 }
+

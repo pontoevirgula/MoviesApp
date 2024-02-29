@@ -1,10 +1,11 @@
-package com.chslcompany.moviesapp.details
+package com.chslcompany.moviesapp.feature_movies.presentation.details.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chslcompany.moviesapp.core.util.Resource
 import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
+import com.chslcompany.moviesapp.feature_movies.presentation.details.state.DetailsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,5 +1,6 @@
-package com.chslcompany.moviesapp.feature_movies.presentation.screen
+package com.chslcompany.moviesapp.feature_movies.presentation.home.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,8 +24,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chslcompany.moviesapp.R
 import com.chslcompany.moviesapp.core.ui.presentation.BottomNavigationBar
-import com.chslcompany.moviesapp.feature_movies.presentation.viewmodel.MovieListViewModel
-import com.chslcompany.moviesapp.feature_movies.util.Screen
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.screen.MyFavoriteMoviesScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel.MovieListViewModel
+import com.chslcompany.moviesapp.feature_movies.util.Screens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,10 +47,9 @@ fun HomeScreen(navController: NavHostController) {
             TopAppBar(
                 title = {
                     Text(
-                        text = if (movieListState.isCurrentPopularScreen)
-                            stringResource(R.string.popular_movie)
-                        else
-                            stringResource(R.string.upcoming_movie),
+                        text = ShowTopAppBarTitle(
+                            bottomNavController.currentBackStackEntry?.destination?.route
+                        ),
                         fontSize = 20.sp
                     )
                 },
@@ -59,23 +60,31 @@ fun HomeScreen(navController: NavHostController) {
             )
         }
     ) {
-        Box(modifier = Modifier
-            .padding(it)
-            .fillMaxSize()
-        ){
+        Box(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+        ) {
             NavHost(
                 navController = bottomNavController,
-                startDestination = Screen.PopularMovieList.rout
-            ){
-                composable(Screen.PopularMovieList.rout) {
+                startDestination = Screens.PopularMovieList.rout
+            ) {
+                composable(Screens.PopularMovieList.rout) {
                     PopularMovieScreen(
                         navController = navController,
                         movieListState = movieListState,
                         onEvent = viewModel::onEvent
                     )
                 }
-                composable(Screen.UpcomingMovieList.rout) {
+                composable(Screens.UpcomingMovieList.rout) {
                     UpcomingMoviesScreen(
+                        navController = navController,
+                        movieListState = movieListState,
+                        onEvent = viewModel::onEvent
+                    )
+                }
+                composable(Screens.FavoriteMovieList.rout) {
+                    MyFavoriteMoviesScreen(
                         navController = navController,
                         movieListState = movieListState,
                         onEvent = viewModel::onEvent
@@ -84,5 +93,19 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
     }
+}
+
+@SuppressLint("ComposableNaming")
+@Composable
+fun ShowTopAppBarTitle(route: String?): String {
+    return when (route) {
+        Screens.PopularMovieList.rout ->
+            stringResource(R.string.popular_movie)
+        Screens.UpcomingMovieList.rout ->
+            stringResource(R.string.upcoming_movie)
+        else ->
+            stringResource(R.string.my_favorites)
+    }
+
 }
 

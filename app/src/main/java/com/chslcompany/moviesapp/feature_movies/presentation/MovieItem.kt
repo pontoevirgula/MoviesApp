@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.presentation.screen
+package com.chslcompany.moviesapp.feature_movies.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +43,7 @@ import coil.size.Size
 import com.chslcompany.moviesapp.BuildConfig
 import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
 import com.chslcompany.moviesapp.feature_movies.util.RatingBar
-import com.chslcompany.moviesapp.feature_movies.util.Screen
+import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.chslcompany.moviesapp.feature_movies.util.getAverageColor
 
 @Composable
@@ -78,7 +78,7 @@ fun MovieItem(
                 )
             )
             .clickable {
-                navHostController.navigate(Screen.Details.rout + "/${movie.id}")
+                navHostController.navigate(Screens.Details.rout + "/${movie.id}")
             }
     ) {
         if (imageState is AsyncImagePainter.State.Error) {
