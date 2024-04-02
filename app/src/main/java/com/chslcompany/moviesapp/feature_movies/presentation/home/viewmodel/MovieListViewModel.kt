@@ -2,11 +2,11 @@ package com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chslcompany.moviesapp.core.util.Resource
-import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
+import com.example.core.usecase.movielistusecase.GetMovieListUseCase
+import com.example.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
-    private val repository: MovieListRepository
+    private val useCase: GetMovieListUseCase
 ) : ViewModel() {
 
     private var _movieListState = MutableStateFlow(MovieListState())
@@ -46,7 +46,6 @@ class MovieListViewModel @Inject constructor(
                 }
             }
 
-            else -> {}
         }
     }
 
@@ -55,8 +54,12 @@ class MovieListViewModel @Inject constructor(
             _movieListState.update {
                 it.copy(isLoading = true)
             }
-            repository.getMovieList(
-                forceFetchFromRemote, Category.UPCOMING, movieListState.value.upcomingMovieListPage
+            useCase(
+                GetMovieListUseCase.GetParams(
+                    forceFetchFromRemote,
+                    Category.UPCOMING,
+                    movieListState.value.upcomingMovieListPage
+                )
             ).collectLatest { result ->
                 when (result) {
                     is Resource.Error -> {
@@ -94,8 +97,12 @@ class MovieListViewModel @Inject constructor(
             _movieListState.update {
                 it.copy(isLoading = true)
             }
-            repository.getMovieList(
-                forceFetchFromRemote, Category.POPULAR, movieListState.value.popularMovieListPage
+            useCase(
+                GetMovieListUseCase.GetParams(
+                    forceFetchFromRemote,
+                    Category.POPULAR,
+                    movieListState.value.popularMovieListPage
+                )
             ).collectLatest { result ->
                 when (result) {
                     is Resource.Error -> {

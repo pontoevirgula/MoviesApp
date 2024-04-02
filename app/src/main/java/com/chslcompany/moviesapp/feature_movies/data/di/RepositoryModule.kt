@@ -1,7 +1,7 @@
 package com.chslcompany.moviesapp.feature_movies.data.di
 
 import com.chslcompany.moviesapp.feature_movies.data.repository.MovieListRepositoryImpl
-import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
+import com.example.core.repository.MovieListRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

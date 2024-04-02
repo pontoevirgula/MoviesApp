@@ -3,9 +3,9 @@ package com.chslcompany.moviesapp.feature_movies.presentation.details.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chslcompany.moviesapp.core.util.Resource
-import com.chslcompany.moviesapp.feature_movies.domain.repository.MovieListRepository
 import com.chslcompany.moviesapp.feature_movies.presentation.details.state.DetailsState
+import com.example.core.usecase.moviedetailusecase.GetDetailMovieUseCase
+import com.example.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val movieListRepository: MovieListRepository,
+    private val useCase: GetDetailMovieUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -35,7 +35,9 @@ class DetailsViewModel @Inject constructor(
                 it.copy(isLoading = true)
             }
 
-            movieListRepository.getMovie(id).collectLatest { result ->
+            useCase(
+                GetDetailMovieUseCase.GetParams(id)
+            ).collectLatest { result ->
                 when (result) {
                     is Resource.Error -> {
                         _detialsState.update {
