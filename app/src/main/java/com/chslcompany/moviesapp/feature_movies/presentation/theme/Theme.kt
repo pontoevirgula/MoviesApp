@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.core.ui.theme
+package com.chslcompany.moviesapp.feature_movies.presentation.theme
 
 import android.app.Activity
 import android.os.Build

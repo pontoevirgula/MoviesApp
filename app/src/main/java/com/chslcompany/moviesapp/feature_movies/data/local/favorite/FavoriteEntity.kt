@@ -2,7 +2,7 @@ package com.chslcompany.moviesapp.feature_movies.data.local.favorite
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
+import com.example.core.model.Movie
 
 @Entity
 data class FavoriteEntity(

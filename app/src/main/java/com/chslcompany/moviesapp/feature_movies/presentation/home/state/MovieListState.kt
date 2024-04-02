@@ -1,6 +1,6 @@
 package com.chslcompany.moviesapp.feature_movies.presentation.home.state
 
-import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
+import com.example.core.model.Movie
 
 data class MovieListState(
     val isLoading : Boolean = false,

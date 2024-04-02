@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.domain.model
+package com.example.core.model
 
 data class Movie(
     val backdrop_path: String,

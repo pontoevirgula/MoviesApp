@@ -1,8 +1,8 @@
 package com.chslcompany.moviesapp.feature_movies.data.repository
 
-import com.chslcompany.moviesapp.core.util.Resource
+import com.example.core.util.Resource
 import com.chslcompany.moviesapp.feature_movies.data.local.movie.MovieDao
-import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
+import com.example.core.model.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

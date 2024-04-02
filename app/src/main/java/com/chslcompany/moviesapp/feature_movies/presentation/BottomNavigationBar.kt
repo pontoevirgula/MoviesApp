@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.core.ui.presentation
+package com.chslcompany.moviesapp.feature_movies.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

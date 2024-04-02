@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.core.ui.presentation
+package com.chslcompany.moviesapp.feature_movies.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.chslcompany.moviesapp.core.ui.theme.MoviesAppTheme
+import com.chslcompany.moviesapp.feature_movies.presentation.theme.MoviesAppTheme
 import com.chslcompany.moviesapp.feature_movies.presentation.details.screen.DetailsScreen
 import com.chslcompany.moviesapp.feature_movies.presentation.home.screen.HomeScreen
 import com.chslcompany.moviesapp.feature_movies.util.Screens

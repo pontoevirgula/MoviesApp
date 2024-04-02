@@ -41,7 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.chslcompany.moviesapp.BuildConfig
-import com.chslcompany.moviesapp.feature_movies.domain.model.Movie
+import com.example.core.model.Movie
 import com.chslcompany.moviesapp.feature_movies.util.RatingBar
 import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.chslcompany.moviesapp.feature_movies.util.getAverageColor

@@ -23,7 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chslcompany.moviesapp.R
-import com.chslcompany.moviesapp.core.ui.presentation.BottomNavigationBar
+import com.chslcompany.moviesapp.feature_movies.presentation.BottomNavigationBar
 import com.chslcompany.moviesapp.feature_movies.presentation.favorites.screen.MyFavoriteMoviesScreen
 import com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel.MovieListViewModel
 import com.chslcompany.moviesapp.feature_movies.util.Screens
