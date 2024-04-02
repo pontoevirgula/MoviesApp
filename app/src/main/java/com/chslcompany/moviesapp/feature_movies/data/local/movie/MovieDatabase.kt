@@ -1,4 +1,4 @@
-package com.chslcompany.moviesapp.feature_movies.data.local
+package com.chslcompany.moviesapp.feature_movies.data.local.movie
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,6 +1,6 @@
 package com.chslcompany.moviesapp.feature_movies.data.repository
 
-import com.chslcompany.moviesapp.feature_movies.data.local.MovieDatabase
+import com.chslcompany.moviesapp.feature_movies.data.local.movie.MovieDatabase
 import com.chslcompany.moviesapp.feature_movies.data.remote.MoviesApi
 import com.example.core.model.Movie
 import com.example.core.repository.MovieListRepository

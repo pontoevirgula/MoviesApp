@@ -22,9 +22,8 @@ data class FavoriteEntity(
 
     @PrimaryKey
     val id : Int,
-    val category : String
 ){
-    fun toMovieFromFavoriteDb(category: String) : Movie =
+    fun toMovieFromFavoriteDb() : Movie =
         Movie(
             backdrop_path = backdrop_path,
             original_language = original_language,
@@ -35,6 +34,6 @@ data class FavoriteEntity(
             vote_average = vote_average,
             id = id,
 
-            category = category,
+            category = "",
         )
 }

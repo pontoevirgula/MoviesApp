@@ -85,8 +85,8 @@ fun HomeScreen(navController: NavHostController) {
                 }
                 composable(Screens.FavoriteMovieList.rout) {
                     MyFavoriteMoviesScreen(
+                        bottomNavController = bottomNavController,
                         navController = navController,
-                        movieListState = movieListState,
                         onEvent = viewModel::onEvent
                     )
                 }

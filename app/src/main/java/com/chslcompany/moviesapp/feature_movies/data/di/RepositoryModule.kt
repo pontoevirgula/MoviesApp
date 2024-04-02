@@ -1,6 +1,8 @@
 package com.chslcompany.moviesapp.feature_movies.data.di
 
+import com.chslcompany.moviesapp.feature_movies.data.repository.FavoriteRepositoryImpl
 import com.chslcompany.moviesapp.feature_movies.data.repository.MovieListRepositoryImpl
+import com.example.core.repository.FavoriteRepository
 import com.example.core.repository.MovieListRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindMovieRepository(
         repositoryImpl: MovieListRepositoryImpl
     ) : MovieListRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFavoriteMovieRepository(
+        repositoryImpl: FavoriteRepositoryImpl
+    ) : FavoriteRepository
 }

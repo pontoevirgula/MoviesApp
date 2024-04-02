@@ -1,5 +1,6 @@
 package com.chslcompany.moviesapp.feature_movies.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,27 +30,33 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.chslcompany.moviesapp.BuildConfig
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
 import com.example.core.model.Movie
 import com.chslcompany.moviesapp.feature_movies.util.RatingBar
 import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.chslcompany.moviesapp.feature_movies.util.getAverageColor
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieItem(
+    bottomNavController : NavHostController? = null,
     movie: Movie,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: FavoriteViewModel
 ) {
     val imageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
@@ -77,9 +84,20 @@ fun MovieItem(
                     )
                 )
             )
-            .clickable {
-                navHostController.navigate(Screens.Details.rout + "/${movie.id}")
-            }
+            .combinedClickable(
+                onClick = {
+                    navHostController.navigate(Screens.Details.rout + "/${movie.id}")
+                },
+                onLongClick = {
+                    viewModel.addFavorite(movie)
+                    bottomNavController?.navigate(Screens.FavoriteMovieList.rout)
+                },
+                onDoubleClick = {
+                    viewModel.removeFavorite(movie)
+                    navHostController.navigate(Screens.Home.rout)
+                }
+            )
+
     ) {
         if (imageState is AsyncImagePainter.State.Error) {
             Box(
