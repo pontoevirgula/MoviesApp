@@ -8,9 +8,11 @@ import com.chslcompany.moviesapp.feature_movies.util.Category
 import com.example.core.usecase.movielistusecase.GetMovieListUseCase
 import com.example.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,35 +62,36 @@ class MovieListViewModel @Inject constructor(
                     Category.UPCOMING,
                     movieListState.value.upcomingMovieListPage
                 )
-            ).collectLatest { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        _movieListState.update {
-                            it.copy(isLoading = false)
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        result.data?.let { upcomingList ->
+            ).flowOn(Dispatchers.IO)
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Error -> {
                             _movieListState.update {
-                                it.copy(
-                                    upcomingMovieList = movieListState.value.upcomingMovieList + upcomingList.shuffled(),
-                                    upcomingMovieListPage = movieListState.value.upcomingMovieListPage + 1
-                                )
+                                it.copy(isLoading = false)
                             }
                         }
+
+                        is Resource.Loading -> {
+                            _movieListState.update {
+                                it.copy(isLoading = result.isLoading)
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            result.data?.let { upcomingList ->
+                                _movieListState.update {
+                                    it.copy(
+                                        upcomingMovieList = movieListState.value.upcomingMovieList + upcomingList.shuffled(),
+                                        upcomingMovieListPage = movieListState.value.upcomingMovieListPage + 1
+                                    )
+                                }
+                            }
+                        }
+
+                        else -> {}
                     }
 
-                    else -> {}
                 }
-
-            }
         }
     }
 
@@ -103,35 +106,36 @@ class MovieListViewModel @Inject constructor(
                     Category.POPULAR,
                     movieListState.value.popularMovieListPage
                 )
-            ).collectLatest { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        _movieListState.update {
-                            it.copy(isLoading = false)
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        result.data?.let { popularList ->
+            ).flowOn(Dispatchers.IO)
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Error -> {
                             _movieListState.update {
-                                it.copy(
-                                    popularMovieList = movieListState.value.popularMovieList + popularList.shuffled(),
-                                    popularMovieListPage = movieListState.value.popularMovieListPage + 1
-                                )
+                                it.copy(isLoading = false)
                             }
                         }
+
+                        is Resource.Loading -> {
+                            _movieListState.update {
+                                it.copy(isLoading = result.isLoading)
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            result.data?.let { popularList ->
+                                _movieListState.update {
+                                    it.copy(
+                                        popularMovieList = movieListState.value.popularMovieList + popularList.shuffled(),
+                                        popularMovieListPage = movieListState.value.popularMovieListPage + 1
+                                    )
+                                }
+                            }
+                        }
+
+                        else -> {}
                     }
 
-                    else -> {}
                 }
-
-            }
         }
     }
 }
