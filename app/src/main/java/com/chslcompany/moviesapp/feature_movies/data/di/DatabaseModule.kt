@@ -2,7 +2,7 @@ package com.chslcompany.moviesapp.feature_movies.data.di
 
 import android.app.Application
 import androidx.room.Room
-import com.chslcompany.moviesapp.feature_movies.data.local.MovieDao
+import com.chslcompany.moviesapp.feature_movies.data.local.movie.MovieDao
 import com.chslcompany.moviesapp.feature_movies.data.local.MovieDatabase
 import dagger.Module
 import dagger.Provides

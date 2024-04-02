@@ -3,6 +3,7 @@ package com.chslcompany.moviesapp.core.ui.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material3.Icon
@@ -18,8 +19,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.chslcompany.moviesapp.R
-import com.chslcompany.moviesapp.feature_movies.presentation.state.MovieListUiEvent
-import com.chslcompany.moviesapp.feature_movies.util.Screen
+import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
+import com.chslcompany.moviesapp.feature_movies.util.Screens
 
 @Composable
 fun BottomNavigationBar(
@@ -33,6 +34,9 @@ fun BottomNavigationBar(
         ), BottomNavigationItem(
             title = stringResource(R.string.upcoming),
             icon = Icons.Rounded.Upcoming
+        ), BottomNavigationItem(
+            title = stringResource(R.string.my_favorites),
+            icon = Icons.Rounded.Favorite
         )
     )
 
@@ -53,13 +57,19 @@ fun BottomNavigationBar(
                             0 -> {
                                 onItemSelected(MovieListUiEvent.Navigate)
                                 bottomNavController.popBackStack()
-                                bottomNavController.navigate(Screen.PopularMovieList.rout)
+                                bottomNavController.navigate(Screens.PopularMovieList.rout)
                             }
 
                             1 -> {
                                 onItemSelected(MovieListUiEvent.Navigate)
                                 bottomNavController.popBackStack()
-                                bottomNavController.navigate(Screen.UpcomingMovieList.rout)
+                                bottomNavController.navigate(Screens.UpcomingMovieList.rout)
+                            }
+
+                            2 -> {
+                                onItemSelected(MovieListUiEvent.Navigate)
+                                bottomNavController.popBackStack()
+                                bottomNavController.navigate(Screens.FavoriteMovieList.rout)
                             }
                         }
                 }, icon = {
