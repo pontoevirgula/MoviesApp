@@ -30,7 +30,7 @@ class GetMovieListUseCaseImpl @Inject constructor(
                 )
                 emit(
                     Resource.Success(
-                        data = movieList
+                        data = movieList.sortedByDescending { it.release_date }
                     )
                 )
                 emit(Resource.Loading(false))
