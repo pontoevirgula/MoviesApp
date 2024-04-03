@@ -2,10 +2,9 @@ package com.chslcompany.moviesapp.feature_movies.data.repository
 
 import com.chslcompany.moviesapp.feature_movies.data.local.favorite.FavoriteDao
 import com.chslcompany.moviesapp.feature_movies.data.local.favorite.FavoriteEntity
-import com.example.core.util.Resource
-import com.chslcompany.moviesapp.feature_movies.data.local.movie.MovieDao
 import com.example.core.model.Movie
 import com.example.core.repository.FavoriteRepository
+import com.example.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

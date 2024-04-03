@@ -13,7 +13,7 @@ class MovieFactory {
 
 
     sealed class Movie {
-        object MovieSuccess : Movie()
+        data object MovieSuccess : Movie()
     }
 
 

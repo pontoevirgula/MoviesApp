@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.chslcompany.moviesapp.feature_movies.presentation.MovieItem
 import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
-import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
 
