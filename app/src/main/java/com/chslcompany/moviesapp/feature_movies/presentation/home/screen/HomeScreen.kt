@@ -14,11 +14,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,16 +34,22 @@ import com.chslcompany.moviesapp.feature_movies.presentation.favorites.screen.My
 import com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel.MovieListViewModel
 import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.chslcompany.moviesapp.feature_movies.util.SetupIconSwitch
-import com.chslcompany.moviesapp.feature_movies.util.UIManager
 import com.chslcompany.moviesapp.feature_movies.util.SetupTextSwitch
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    dataStore: DataStore<Preferences>,
+    darkModePreference: Preferences.Key<Boolean>,
+    isDarkMode: Boolean
+) {
     val viewModel = hiltViewModel<MovieListViewModel>()
     val movieListState = viewModel.movieListState.collectAsState().value
     val bottomNavController = rememberNavController()
+    val scope = rememberCoroutineScope()
     Scaffold(
         bottomBar = {
             BottomNavigationBar(
@@ -73,14 +83,18 @@ fun HomeScreen(navController: NavHostController) {
                 TopAppBar(
                     navigationIcon = {
                         Switch(
-                            checked = UIManager.isDarkMode.value,
-                            onCheckedChange = { isDarkOrNot ->
-                                UIManager.isDarkMode.value = isDarkOrNot
+                            checked = isDarkMode,
+                            onCheckedChange = { newValue ->
+                                 scope.launch{
+                                    dataStore.edit { preference ->
+                                        preference[darkModePreference] = newValue
+                                    }
+                                }
                             },
-                            thumbContent = { SetupIconSwitch() }
+                            thumbContent = { SetupIconSwitch(isDarkMode) }
                         )
                     },
-                    title = { Text(text = SetupTextSwitch()) }
+                    title = { Text(text = SetupTextSwitch(isDarkMode)) }
                 )
                 NavHost(
                     navController = bottomNavController,

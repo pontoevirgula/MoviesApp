@@ -121,12 +121,17 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Extended Icons
-    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.6.4")
 
     // system UI Controller
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
     //Coroutines
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    //Data Store
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
 
 }

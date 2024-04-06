@@ -6,15 +6,13 @@ import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.chslcompany.moviesapp.feature_movies.util.UIManager.isDarkMode
 
 @SuppressLint("ComposableNaming")
 @Composable
-fun SetupTextSwitch(): String {
-    val text = remember(isDarkMode.value) {
-        if (isDarkMode.value) {
+fun SetupTextSwitch(isDarkMode: Boolean): String {
+    val text = remember(isDarkMode) {
+        if (isDarkMode) {
             "Ativar modo light"
         } else {
             "Ativar modo dark"
@@ -23,17 +21,13 @@ fun SetupTextSwitch(): String {
     return text
 }
 @Composable
-fun SetupIconSwitch() {
-    val icon = remember(isDarkMode.value) {
-        if (isDarkMode.value) {
+fun SetupIconSwitch(isDarkMode: Boolean) {
+    val icon = remember(isDarkMode) {
+        if (isDarkMode) {
             Icons.Filled.Nightlight
         } else {
             Icons.Filled.WbSunny
         }
     }
     Icon(icon, contentDescription = null)
-}
-
-object UIManager {
-    var isDarkMode = mutableStateOf(false)
 }
