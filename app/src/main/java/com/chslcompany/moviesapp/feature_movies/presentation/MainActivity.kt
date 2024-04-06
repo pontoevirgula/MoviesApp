@@ -15,10 +15,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.chslcompany.moviesapp.feature_movies.presentation.theme.MoviesAppTheme
 import com.chslcompany.moviesapp.feature_movies.presentation.details.screen.DetailsScreen
 import com.chslcompany.moviesapp.feature_movies.presentation.home.screen.HomeScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.theme.MoviesAppTheme
 import com.chslcompany.moviesapp.feature_movies.util.Screens
+import com.chslcompany.moviesapp.feature_movies.util.UIManager.isDarkMode
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +28,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoviesAppTheme {
+
+            MoviesAppTheme(darkTheme = isDarkMode.value) {
                 SetBarColor(color = MaterialTheme.colorScheme.inverseOnSurface)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -38,18 +40,18 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = Screens.Home.rout
-                    ){
-                        composable(Screens.Home.rout){
+                    ) {
+                        composable(Screens.Home.rout) {
                             HomeScreen(navController)
                         }
                         composable(
-                            route = Screens.Details.rout+"/{movieId}",
+                            route = Screens.Details.rout + "/{movieId}",
                             arguments = listOf(
                                 navArgument("movieId") {
                                     type = NavType.IntType
                                 }
                             )
-                        ){
+                        ) {
                             DetailsScreen()
                         }
                     }
@@ -59,9 +61,9 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun SetBarColor(color: Color){
+    private fun SetBarColor(color: Color) {
         val systemUiController = rememberSystemUiController()
-        LaunchedEffect(key1 = color){
+        LaunchedEffect(key1 = color) {
             systemUiController.setSystemBarsColor(color)
         }
     }
