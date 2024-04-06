@@ -2,6 +2,7 @@ package com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chslcompany.moviesapp.feature_movies.data.repository.UserPreferenceRepository
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
@@ -19,15 +20,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
-    private val useCase: GetMovieListUseCase
+    private val useCase: GetMovieListUseCase,
+    private val userPreferenceRepository : UserPreferenceRepository
 ) : ViewModel() {
 
     private var _movieListState = MutableStateFlow(MovieListState())
     val movieListState = _movieListState.asStateFlow()
 
+    val isDarkMode = userPreferenceRepository.isDarkModeFlow
+
     init {
         getPopularMovieList(forceFetchFromRemote = false)
         getUpcomingMovieList(forceFetchFromRemote = false)
+    }
+
+    fun setDarkMode(newValue : Boolean) {
+        viewModelScope.launch {
+            userPreferenceRepository.isDarkMode(newValue)
+        }
     }
 
     fun onEvent(event: MovieListUiEvent) {
