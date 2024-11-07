@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -33,7 +34,7 @@ fun MyFavoriteMoviesScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            Text(text = "Não tem favoritos", color = MaterialTheme.colorScheme.onBackground)
         }
     } else {
         LazyVerticalGrid(
@@ -46,7 +47,6 @@ fun MyFavoriteMoviesScreen(
                     bottomNavController = bottomNavController,
                     movie = favoriteListState.favorites[index],
                     navHostController = navController,
-                    viewModel = favoriteViewModel
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 

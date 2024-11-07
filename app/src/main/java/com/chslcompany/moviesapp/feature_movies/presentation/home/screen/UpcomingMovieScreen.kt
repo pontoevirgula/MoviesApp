@@ -11,11 +11,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.chslcompany.moviesapp.feature_movies.presentation.MovieItem
-import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListState
 import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
 import com.chslcompany.moviesapp.feature_movies.util.Category
@@ -26,10 +25,11 @@ fun UpcomingMoviesScreen(
     navController: NavHostController,
     onEvent: (MovieListUiEvent) -> Unit
 ) {
-    val viewModel = hiltViewModel<FavoriteViewModel>()
     if (movieListState.upcomingMovieList.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("LoadingIndicator"),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
@@ -37,14 +37,15 @@ fun UpcomingMoviesScreen(
     } else {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("MovieItem"),
             contentPadding = PaddingValues(vertical = 8.dp, horizontal = 4.dp)
         ) {
             items(movieListState.upcomingMovieList.size) { index ->
                 MovieItem(
                     movie = movieListState.upcomingMovieList[index],
                     navHostController = navController,
-                    viewModel = viewModel
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 

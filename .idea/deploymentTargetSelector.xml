@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="deploymentTargetSelector">
+    <selectionStates>
+      <SelectionState runConfigName="app">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="UpcomingMovieScreenKtTest">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-11-02T03:42:06.593847100Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Carlos\.android\avd\Pixel.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="showsLoadingIndicator_whenMovieListIsEmpty()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="showMovies_whenMovieListIsNotEmpty()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+    </selectionStates>
+  </component>
+</project>
