@@ -1,11 +1,14 @@
 package com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chslcompany.moviesapp.feature_movies.presentation.favorites.state.FavoriteState
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.state.FavoriteListState
 import com.example.core.model.Movie
 import com.example.core.repository.FavoriteRepository
 import com.example.core.util.Resource
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +22,12 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
     private val repository: FavoriteRepository
 ) : ViewModel() {
-    private var _favoriteListState = MutableStateFlow(FavoriteState())
+    private val trace = Firebase.performance.newTrace(CALL_NETWORK)
+    private var _favoriteListState = MutableStateFlow(FavoriteListState())
     val favoriteListState = _favoriteListState.asStateFlow()
 
     init {
+        trace.start()
         getFavorites()
     }
 
@@ -33,8 +38,14 @@ class FavoriteViewModel @Inject constructor(
             }
             repository.getFavorites()
                 .collectLatest { favoriteList ->
+                    Log.d(
+                        "VIEWMODEL - FAVORITE",
+                        "Incrementing number of requests counter in trace"
+                    )
+                    trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
                     when (favoriteList) {
                         is Resource.Error -> {
+                            trace.stop()
                             _favoriteListState.update {
                                 it.copy(isLoading = false)
                             }
@@ -71,5 +82,10 @@ class FavoriteViewModel @Inject constructor(
         viewModelScope.launch {
             repository.delete(movie)
         }
+    }
+
+    companion object {
+        private const val REQUESTS_COUNTER_NAME = "requests sent"
+        private const val CALL_NETWORK = "call network"
     }
 }

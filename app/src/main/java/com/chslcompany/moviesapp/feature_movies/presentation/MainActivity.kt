@@ -1,6 +1,7 @@
 package com.chslcompany.moviesapp.feature_movies.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +20,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chslcompany.moviesapp.feature_movies.presentation.details.screen.DetailsScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
 import com.chslcompany.moviesapp.feature_movies.presentation.home.screen.HomeScreen
 import com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel.MovieListViewModel
 import com.chslcompany.moviesapp.feature_movies.presentation.theme.MoviesAppTheme
 import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,8 +36,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           val viewModel = hiltViewModel<MovieListViewModel>()
-            val isDarkMode by viewModel.isDarkMode.collectAsState(initial = false)
+           val movieListViewModel = hiltViewModel<MovieListViewModel>()
+           val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
+            val isDarkMode by movieListViewModel.isDarkMode.collectAsState(initial = false)
             MoviesAppTheme(darkTheme = isDarkMode) {
                 SetBarColor(color = MaterialTheme.colorScheme.inverseOnSurface)
                 Surface(
@@ -46,8 +51,11 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screens.Home.rout
                     ) {
+                        val trace = Firebase.performance.newTrace(STARTUP_TRACE_NAME)
+                        Log.d("PERFOMANCE", "Starting trace")
+                        trace.start()
                         composable(Screens.Home.rout) {
-                            HomeScreen(navController, viewModel, isDarkMode)
+                            HomeScreen(navController, movieListViewModel, favoriteViewModel, isDarkMode)
                         }
                         composable(
                             route = Screens.Details.rout + "/{movieId}",
@@ -59,6 +67,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             DetailsScreen()
                         }
+                        trace.stop()
                     }
                 }
             }
@@ -71,6 +80,10 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(key1 = color) {
             systemUiController.setSystemBarsColor(color)
         }
+    }
+
+    companion object {
+        private const val STARTUP_TRACE_NAME = "startup_trace"
     }
 
 }

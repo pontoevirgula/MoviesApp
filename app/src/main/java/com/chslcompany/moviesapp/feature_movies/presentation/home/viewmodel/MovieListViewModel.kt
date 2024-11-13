@@ -1,5 +1,6 @@
 package com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chslcompany.moviesapp.feature_movies.data.repository.UserPreferenceRepository
@@ -8,6 +9,8 @@ import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieLis
 import com.chslcompany.moviesapp.feature_movies.util.Category
 import com.example.core.usecase.movielistusecase.GetMovieListUseCase
 import com.example.core.util.Resource
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,17 +27,19 @@ class MovieListViewModel @Inject constructor(
     private val userPreferenceRepository : UserPreferenceRepository
 ) : ViewModel() {
 
+    private val trace = Firebase.performance.newTrace(CALL_NETWORK)
     private var _movieListState = MutableStateFlow(MovieListState())
     val movieListState = _movieListState.asStateFlow()
 
     val isDarkMode = userPreferenceRepository.isDarkModeFlow
 
     init {
+        trace.start()
         getPopularMovieList(forceFetchFromRemote = false)
         getUpcomingMovieList(forceFetchFromRemote = false)
     }
 
-    fun setDarkMode(newValue : Boolean) {
+    fun setDarkMode(newValue: Boolean) {
         viewModelScope.launch {
             userPreferenceRepository.isDarkMode(newValue)
         }
@@ -74,8 +79,14 @@ class MovieListViewModel @Inject constructor(
                 )
             ).flowOn(Dispatchers.IO)
                 .collectLatest { result ->
+                    Log.d(
+                        "VIEWMODEL - UPCOMING",
+                        "Incrementing number of requests counter in trace"
+                    )
+                    trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
                     when (result) {
                         is Resource.Error -> {
+                            trace.stop()
                             _movieListState.update {
                                 it.copy(isLoading = false)
                             }
@@ -118,8 +129,11 @@ class MovieListViewModel @Inject constructor(
                 )
             ).flowOn(Dispatchers.IO)
                 .collectLatest { result ->
+                    Log.d("VIEWMODEL - POPULAR", "Incrementing number of requests counter in trace")
+                    trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
                     when (result) {
                         is Resource.Error -> {
+                            trace.stop()
                             _movieListState.update {
                                 it.copy(isLoading = false)
                             }
@@ -147,5 +161,10 @@ class MovieListViewModel @Inject constructor(
 
                 }
         }
+    }
+
+    companion object {
+        private const val REQUESTS_COUNTER_NAME = "requests sent"
+        private const val CALL_NETWORK = "call network"
     }
 }

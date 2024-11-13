@@ -6,6 +6,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -100,6 +102,13 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-perf")
+//    implementation ("com.google.firebase:firebase-database-ktx")
+//    implementation ("com.google.firebase:firebase-auth-ktx")
+//    implementation("com.google.firebase:firebase-analytics")
+
     //Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
@@ -137,6 +146,5 @@ dependencies {
     //Data Store
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-
 
 }

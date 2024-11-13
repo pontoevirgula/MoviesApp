@@ -10,25 +10,21 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.chslcompany.moviesapp.feature_movies.presentation.MovieItem
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.state.FavoriteListState
 import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
-import com.chslcompany.moviesapp.feature_movies.presentation.home.state.MovieListUiEvent
-import com.chslcompany.moviesapp.feature_movies.util.Category
 
 @Composable
 fun MyFavoriteMoviesScreen(
     bottomNavController : NavHostController,
     navController: NavHostController,
-    onEvent: (MovieListUiEvent) -> Unit
+    favoriteListState: FavoriteListState,
+    favoriteViewModel: FavoriteViewModel
 ){
-    val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
-    val favoriteListState = favoriteViewModel.favoriteListState.collectAsState().value
     if (favoriteListState.favorites?.isEmpty() == true){
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -47,12 +43,9 @@ fun MyFavoriteMoviesScreen(
                     bottomNavController = bottomNavController,
                     movie = favoriteListState.favorites[index],
                     navHostController = navController,
+                    favoriteViewModel = favoriteViewModel
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-
-                if (index >= favoriteListState.favorites.size - 1 && !favoriteListState.isLoading){
-                    onEvent(MovieListUiEvent.Paginate(Category.POPULAR))
-                }
             }
         }
     }
