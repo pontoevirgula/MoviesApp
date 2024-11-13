@@ -36,7 +36,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -55,8 +54,8 @@ fun MovieItem(
     bottomNavController : NavHostController? = null,
     movie: Movie,
     navHostController: NavHostController,
+    favoriteViewModel: FavoriteViewModel? = null
 ) {
-    val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
     val imageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(BuildConfig.IMAGE_BASE_URL + movie.backdrop_path)
@@ -88,15 +87,14 @@ fun MovieItem(
                     navHostController.navigate(Screens.Details.rout + "/${movie.id}")
                 },
                 onLongClick = {
-                    favoriteViewModel.addFavorite(movie)
+                    favoriteViewModel?.addFavorite(movie)
                     bottomNavController?.navigate(Screens.FavoriteMovieList.rout)
                 },
                 onDoubleClick = {
-                    favoriteViewModel.removeFavorite(movie)
+                    favoriteViewModel?.removeFavorite(movie)
                     navHostController.navigate(Screens.Home.rout)
                 }
             )
-
     ) {
         if (imageState is AsyncImagePainter.State.Error) {
             Box(

@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.chslcompany.moviesapp.R
 import com.chslcompany.moviesapp.feature_movies.presentation.BottomNavigationBar
 import com.chslcompany.moviesapp.feature_movies.presentation.favorites.screen.MyFavoriteMoviesScreen
+import com.chslcompany.moviesapp.feature_movies.presentation.favorites.viewmodel.FavoriteViewModel
 import com.chslcompany.moviesapp.feature_movies.presentation.home.viewmodel.MovieListViewModel
 import com.chslcompany.moviesapp.feature_movies.util.Screens
 import com.chslcompany.moviesapp.feature_movies.util.SetupIconSwitch
@@ -36,16 +37,18 @@ import com.chslcompany.moviesapp.feature_movies.util.SetupTextSwitch
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    viewModel: MovieListViewModel,
+    movieListViewModel: MovieListViewModel,
+    favoriteViewModel: FavoriteViewModel,
     isDarkMode: Boolean
 ) {
-    val movieListState = viewModel.movieListState.collectAsState().value
+    val movieListState = movieListViewModel.movieListState.collectAsState().value
+    val favoriteListState = favoriteViewModel.favoriteListState.collectAsState().value
     val bottomNavController = rememberNavController()
     Scaffold(
         bottomBar = {
             BottomNavigationBar(
                 bottomNavController = bottomNavController,
-                onItemSelected = viewModel::onEvent
+                onItemSelected = movieListViewModel::onEvent
             )
         },
         topBar = {
@@ -76,7 +79,7 @@ fun HomeScreen(
                         Switch(
                             checked = isDarkMode,
                             onCheckedChange = { newValue ->
-                                viewModel.setDarkMode(newValue)
+                                movieListViewModel.setDarkMode(newValue)
                             },
                             thumbContent = { SetupIconSwitch(isDarkMode) }
                         )
@@ -91,21 +94,22 @@ fun HomeScreen(
                         PopularMovieScreen(
                             navController = navController,
                             movieListState = movieListState,
-                            onEvent = viewModel::onEvent
+                            onEvent = movieListViewModel::onEvent
                         )
                     }
                     composable(Screens.UpcomingMovieList.rout) {
                         UpcomingMoviesScreen(
                             navController = navController,
                             movieListState = movieListState,
-                            onEvent = viewModel::onEvent
+                            onEvent = movieListViewModel::onEvent
                         )
                     }
                     composable(Screens.FavoriteMovieList.rout) {
                         MyFavoriteMoviesScreen(
                             bottomNavController = bottomNavController,
                             navController = navController,
-                            onEvent = viewModel::onEvent
+                            favoriteListState = favoriteListState,
+                            favoriteViewModel = favoriteViewModel
                         )
                     }
                 }
