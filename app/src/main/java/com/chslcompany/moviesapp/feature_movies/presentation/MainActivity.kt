@@ -36,10 +36,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           val movieListViewModel = hiltViewModel<MovieListViewModel>()
-           val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
-            val isDarkMode by movieListViewModel.isDarkMode.collectAsState(initial = false)
-            MoviesAppTheme(darkTheme = isDarkMode) {
+           val movieListViewModel : MovieListViewModel = hiltViewModel()
+           val favoriteViewModel : FavoriteViewModel = hiltViewModel()
+            val backgroundColorPreference by movieListViewModel.isDarkMode.collectAsState(initial = false)
+            MoviesAppTheme(darkTheme = backgroundColorPreference) {
                 SetBarColor(color = MaterialTheme.colorScheme.inverseOnSurface)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -55,7 +55,8 @@ class MainActivity : ComponentActivity() {
                         Log.d("PERFOMANCE", "Starting trace")
                         trace.start()
                         composable(Screens.Home.rout) {
-                            HomeScreen(navController, movieListViewModel, favoriteViewModel, isDarkMode)
+                            HomeScreen(navController, movieListViewModel, favoriteViewModel, backgroundColorPreference)
+                            trace.stop()
                         }
                         composable(
                             route = Screens.Details.rout + "/{movieId}",
@@ -66,8 +67,9 @@ class MainActivity : ComponentActivity() {
                             )
                         ) {
                             DetailsScreen()
+                            trace.stop()
                         }
-                        trace.stop()
+                        //trace.stop()
                     }
                 }
             }

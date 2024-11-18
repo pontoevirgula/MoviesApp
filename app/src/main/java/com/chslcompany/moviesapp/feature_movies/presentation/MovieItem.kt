@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,21 +52,47 @@ import com.example.core.model.Movie
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieItem(
-    bottomNavController : NavHostController? = null,
+    bottomNavController: NavHostController? = null,
     movie: Movie,
     navHostController: NavHostController,
     favoriteViewModel: FavoriteViewModel? = null
 ) {
-    val imageState = rememberAsyncImagePainter(
+    val imagePainter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(BuildConfig.IMAGE_BASE_URL + movie.backdrop_path)
             .size(Size.ORIGINAL)
             .build()
-    ).state
+    )
+    val imageState = imagePainter.state
 
     val defaultColor = MaterialTheme.colorScheme.secondaryContainer
-    var dominantColor by remember {
-        mutableStateOf(defaultColor)
+    var dominantColor by remember { mutableStateOf(defaultColor) }
+
+    val gradientBrush = remember(dominantColor, defaultColor) {
+        Brush.verticalGradient(
+            colors = listOf(
+                defaultColor,
+                dominantColor
+            )
+        )
+    }
+
+    val onClick: () -> Unit = remember(movie.id) {
+        { navHostController.navigate(Screens.Details.rout + "/${movie.id}") }
+    }
+
+    val onLongClick: () -> Unit = remember(movie, bottomNavController) {
+        {
+            favoriteViewModel?.addFavorite(movie)
+            bottomNavController?.navigate(Screens.FavoriteMovieList.rout)
+        }
+    }
+
+    val onDoubleClick: () -> Unit = remember(movie, navHostController) {
+        {
+            favoriteViewModel?.removeFavorite(movie)
+            navHostController.navigate(Screens.Home.rout)
+        }
     }
 
     Column(
@@ -74,26 +101,11 @@ fun MovieItem(
             .width(200.dp)
             .padding(8.dp)
             .clip(RoundedCornerShape(28.dp))
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.secondaryContainer,
-                        dominantColor
-                    )
-                )
-            )
+            .background(gradientBrush)
             .combinedClickable(
-                onClick = {
-                    navHostController.navigate(Screens.Details.rout + "/${movie.id}")
-                },
-                onLongClick = {
-                    favoriteViewModel?.addFavorite(movie)
-                    bottomNavController?.navigate(Screens.FavoriteMovieList.rout)
-                },
-                onDoubleClick = {
-                    favoriteViewModel?.removeFavorite(movie)
-                    navHostController.navigate(Screens.Home.rout)
-                }
+                onClick = onClick,
+                onLongClick = onLongClick,
+                onDoubleClick = onDoubleClick
             )
     ) {
         if (imageState is AsyncImagePainter.State.Error) {
@@ -115,9 +127,11 @@ fun MovieItem(
         }
 
         if (imageState is AsyncImagePainter.State.Success) {
-            dominantColor = getAverageColor(
-                imageBitmap = imageState.result.drawable.toBitmap().asImageBitmap()
-            )
+            LaunchedEffect(imageState) {
+                dominantColor = getAverageColor(
+                    imageBitmap = imageState.result.drawable.toBitmap().asImageBitmap()
+                )
+            }
 
             Image(
                 modifier = Modifier
@@ -125,7 +139,7 @@ fun MovieItem(
                     .padding(6.dp)
                     .height(250.dp)
                     .clip(RoundedCornerShape(22.dp)),
-                painter = imageState.painter,
+                painter = imagePainter,
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop
             )
@@ -141,7 +155,7 @@ fun MovieItem(
             maxLines = 1
         )
 
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, bottom = 12.dp, top = 4.dp)
