@@ -15,31 +15,45 @@ class MovieListRepositoryImpl @Inject constructor(
         category: String,
         page: Int
     ): List<Movie> {
-
-        val localMovieList = database.movieDao.getMovieListByCategory(category)
-        val shouldLoadLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
-        if (shouldLoadLocalMovie) {
-            return localMovieList.map { movieDb ->
-                movieDb.toMovie(category)
-            }
+        val localMovieList = getMovieFromCache(database, category)
+        if (localMovieList.isNotEmpty() && !forceFetchFromRemote) {
+            return localMovieList
         }
-
-        return try {
-            val getMovieFromApi = api.getMovieList(category, page)
-            val saveMovieList = getMovieFromApi.results.map { movieDTO ->
-                movieDTO.toMovieDb(category)
-            }
-            database.movieDao.upsertMovieList(saveMovieList)
-            saveMovieList.map { it.toMovie(category) }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        return getMovieFromRemote(api, category, page, database)
     }
 
-    override suspend fun getMovie(id: Int): Movie {
+    override suspend fun getMovieById(id: Int): Movie {
         val movieDb = database.movieDao.getMovieById(id)
         return movieDb.toMovie(movieDb.category)
     }
 
+}
+
+suspend fun getMovieFromCache(
+    database: MovieDatabase,
+    category: String
+): List<Movie> {
+    val localMovieList = database.movieDao.getMovieListByCategory(category)
+    return localMovieList.map { movieDb ->
+        movieDb.toMovie(category)
+    }
+}
+
+suspend fun getMovieFromRemote(
+    api: MoviesApi,
+    category: String,
+    page: Int,
+    database: MovieDatabase
+) : List<Movie>{
+    return try {
+        val getMovieFromApi = api.getMovieList(category, page)
+        val saveMovieList = getMovieFromApi.results.map { movieDTO ->
+            movieDTO.toMovieDb(category)
+        }
+        database.movieDao.upsertMovieList(saveMovieList)
+        saveMovieList.map { it.toMovie(category) }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        emptyList()
+    }
 }

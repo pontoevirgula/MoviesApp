@@ -9,5 +9,5 @@ interface MovieListRepository {
         page: Int
     ) : List<Movie>
 
-    suspend fun getMovie(id : Int) : Movie
+    suspend fun getMovieById(id : Int) : Movie
 }

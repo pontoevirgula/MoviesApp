@@ -19,7 +19,7 @@ class GetDetailMovieUseCaseImpl @Inject constructor(
         return flow {
             emit(Resource.Loading(true))
 
-            val movieId = repository.getMovie(params.id)
+            val movieId = repository.getMovieById(params.id)
 
             emit(Resource.Success(movieId))
             emit(Resource.Loading(false))
